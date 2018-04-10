@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+//定义LogLevel的类型
 type LogLevel int
 
 const (
@@ -18,16 +19,19 @@ const (
 
 type AppLogFunc func(lvl LogLevel, f string, args ...interface{})
 
+//Logger接口实现了Output类
 type Logger interface {
 	Output(maxdepth int, s string) error
 }
 
+//空的Logger
 type NilLogger struct{}
 
 func (l NilLogger) Output(maxdepth int, s string) error {
 	return nil
 }
 
+//LogLevel转换成对应的数字
 func (l LogLevel) String() string {
 	switch l {
 	case 1:
@@ -44,6 +48,7 @@ func (l LogLevel) String() string {
 	panic("invalid LogLevel")
 }
 
+//通过string获取对应的LogLevel
 func ParseLogLevel(levelstr string, verbose bool) (LogLevel, error) {
 	lvl := INFO
 
@@ -67,6 +72,7 @@ func ParseLogLevel(levelstr string, verbose bool) (LogLevel, error) {
 	return lvl, nil
 }
 
+//通过Logger打印对应基本的日志，cfg配置级别，msgLevel消息级别
 func Logf(logger Logger, cfgLevel LogLevel, msgLevel LogLevel, f string, args ...interface{}) {
 	if cfgLevel > msgLevel {
 		return
