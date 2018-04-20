@@ -4,6 +4,7 @@ import (
 	"strings"
 )
 
+//string 数组
 type StringArray []string
 
 func (a *StringArray) Set(s string) error {
